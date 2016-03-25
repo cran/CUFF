@@ -1,0 +1,10 @@
+1866835a37f34b7e1c47b86e87a0194e *DESCRIPTION
+ea7d038d40e77aaddc531b36d61b2ed5 *NAMESPACE
+137d08846059ba35f50c411ec3a8837a *R/corr.R
+66c5dca3be3ff41812d94d79e0dc0cd4 *R/cross.R
+0998622bfd1b4c582a8a6e22fa5f07b2 *R/strutil.R
+c248c72ee6765f85cf75620cda5f23ad *man/corr.Rd
+465bad242989bc76ee03b9e781a12ea9 *man/cross.Rd
+b0312c446d3a4c6b1f8464c27a7ac997 *man/printcross.Rd
+7a43b76dab81ad810051b6dbd20da769 *man/strutil.Rd
+91a17b8fa628846bb59c048ed19f92bc *man/xtab.Rd
