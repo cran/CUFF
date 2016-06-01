@@ -1,8 +1,19 @@
 ### import functions from package openxlsx and xtable.
 import(xtable)
 import(openxlsx)
-importFrom("stats", addmargins, chisq.test, cor, cor.test,
-           model.frame, na.exclude, na.pass, na.omit, na.fail)
+importFrom("stats",
+           addmargins,
+           aggregate,
+           chisq.test,
+           cor,
+           cor.test,
+           model.frame,
+           na.exclude,
+           na.pass,
+           na.omit,
+           na.fail,
+           terms)
+
 importFrom("utils", capture.output)
 ### Functions to export to users.
 export(
@@ -16,6 +27,7 @@ export(
     ## Description of categorical variables (freq.R, cross.R).
     cross,             # This function creates a crosstab object which
                        # displays % and statistical test.
+    xf,                # applies a function across a list of factors.
     xtab,              # Corrects bugs in xtabs associated with NA managements.
     ## Complementary utility functions.
     ## Print methods.

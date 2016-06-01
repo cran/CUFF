@@ -1,0 +1,2 @@
+2016-05-31 Charles-Edouard Giguere <ce.giguere@gmail.com>
+	* Added xf, a function that applies function across multiple layers.
