@@ -14,7 +14,9 @@ importFrom("stats",
            na.fail,
            terms)
 
-importFrom("utils", capture.output)
+importFrom("utils",
+           capture.output,
+           write.table)
 ### Functions to export to users.
 export(
     ## String utility functions (strutil.R).
@@ -29,10 +31,12 @@ export(
                        # displays % and statistical test.
     xf,                # applies a function across a list of factors.
     xtab,              # Corrects bugs in xtabs associated with NA managements.
+    freq,              # displays % of a categorical variable. 
     ## Complementary utility functions.
     ## Print methods.
     print.cross,       # Print function for freq objects.
-    print.correlation, # Print function fo corr objects.
+    print.correlation, # Print function for corr objects.
+    print.frequencies, # Print function for frequencies objects. 
     ## sum/mean for a minimum number of valid values (sum.R and cross.R).
     Total              # modification of sum that uses na.rm=TRUE as default
                        # and replaces a result of NA by 0.
@@ -42,4 +46,5 @@ export(
 ### Declare S3 methods.
 S3method(print, cross)
 S3method(print, correlation)
+S3method(print, frequencies)
 

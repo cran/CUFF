@@ -1,2 +1,4 @@
+2016-06-27 Charles-Edouard Giguere <ce.giguere@gmail.com>
+	* Added freq, a function that displays frequencies of categorical variables. 
 2016-05-31 Charles-Edouard Giguere <ce.giguere@gmail.com>
 	* Added xf, a function that applies function across multiple layers.
