@@ -2,8 +2,8 @@ Note: -*- Encoding: utf-8 -*-
 Package: CUFF
 Type: Package
 Title: Charles's Utility Function using Formula
-Version: 1.2
-Date: 2016-06-27
+Version: 1.3
+Date: 2017-05-08
 Author: Charles-Édouard Giguère
 Maintainer: Charles-Édouard Giguère <ce.giguere@gmail.com>
 Depends: R (>= 3.2.2)
@@ -18,6 +18,6 @@ LazyLoad: TRUE
 LazyData: YES
 URL: https://github.com/giguerch/CUFF
 NeedsCompilation: no
-Packaged: 2016-06-27 06:45:39 UTC; Charles-Edouard
+Packaged: 2017-05-09 02:15:36 UTC; giguerch
 Repository: CRAN
-Date/Publication: 2016-06-27 09:42:58
+Date/Publication: 2017-05-09 02:24:21 UTC

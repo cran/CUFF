@@ -36,8 +36,9 @@ export(
     ## Print methods.
     print.cross,       # Print function for freq objects.
     print.correlation, # Print function for corr objects.
-    print.frequencies, # Print function for frequencies objects. 
-    ## sum/mean for a minimum number of valid values (sum.R and cross.R).
+    print.frequencies, # Print function for frequencies objects.
+    ## Compute sums.
+    sum.n,             # sumn for a minimum number of valid values.
     Total              # modification of sum that uses na.rm=TRUE as default
                        # and replaces a result of NA by 0.
     )
@@ -47,4 +48,5 @@ export(
 S3method(print, cross)
 S3method(print, correlation)
 S3method(print, frequencies)
+S3method(sum,n)
 
