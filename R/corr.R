@@ -131,7 +131,7 @@ correlation <- function(x, y = NULL, method = "pearson",
     out <- list(R = R, N = N, P = P, Sym = symmetric)
     attr(out, "nomx") <- dimnamesx
     attr(out, "nomy") <- dimnamesy
-    class(out) <- "correlation"
+    class(out) <- "corr"
     out
 }
 
@@ -157,10 +157,9 @@ correlation.formula <- function(x, ..., data = NULL){
 
 
 ### Print methods for a correlation object.
-print.correlation <- function(x, ..., toLatex = FALSE){
+print.corr <- function(x, ..., toLatex = FALSE){
     if(!x$Sym){
-        print.correlation.unsym(x, ..., toLatex = toLatex)
-
+        print.corr.unsym(x, ..., toLatex = toLatex)
     }
     else {
 
@@ -234,7 +233,7 @@ print.correlation <- function(x, ..., toLatex = FALSE){
         }
     }
 }
-print.correlation.unsym <- function(x, ..., toLatex = toLatex){
+print.corr.unsym <- function(x, ..., toLatex = toLatex){
     ## Variable dimensions.
     dxy <- dim(x$R)
     ## Variable names (x, y).
@@ -299,7 +298,7 @@ print.correlation.unsym <- function(x, ..., toLatex = toLatex){
         cat("\\hline", fill = TRUE)
         cat("& " %+% paste(nomy, collapse=" & ") %+% " \\\\\n")
         cat("\\hline\\hline", fill = TRUE)
-        for(i in 1:length(nomx[1])){
+        for(i in 1:length(nomx)){
             cat("R(" %+% nomx[i] %+% ") &")
             cat(numtostr(x$R[i,], digits=4), sep = " & ")
             cat(" \\\\\n")

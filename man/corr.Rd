@@ -2,7 +2,7 @@
 \encoding{utf-8}
 \name{correlation}
 \alias{correlation}
-\alias{print.correlation}
+\alias{print.corr}
 \title{Bivariate correlations}
 \description{
   This is a function that creates correlation matrix objects that can be
@@ -14,7 +14,7 @@ correlation(x, y = NULL, method = "pearson",
             alternative = "two.sided", exact = NULL,
             use = "pairwise.complete.obs",
             continuity = FALSE, data = NULL)
-\method{print}{correlation}(x, ... , toLatex = FALSE)
+\method{print}{corr}(x, ... , toLatex = FALSE)
 }
 \arguments{
   \item{x}{x is a matrix/\code{data.frame} or a formula defining which
