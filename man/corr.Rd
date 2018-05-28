@@ -14,7 +14,7 @@ correlation(x, y = NULL, method = "pearson",
             alternative = "two.sided", exact = NULL,
             use = "pairwise.complete.obs",
             continuity = FALSE, data = NULL)
-\method{print}{corr}(x, ... , toLatex = FALSE)
+\method{print}{corr}(x, ... , toLatex = FALSE, cutstr = NULL, toMarkdown = FALSE)
 }
 \arguments{
   \item{x}{x is a matrix/\code{data.frame} or a formula defining which
@@ -31,8 +31,10 @@ correlation(x, y = NULL, method = "pearson",
     must be used. See \code{help(cor)} for more details.}
   \item{...}{Unused in this function}
   \item{data}{data.frame to use in conjuction with formula}
-  \item{toLatex}{Logival value to know if output displayed as a latex
+  \item{toLatex}{Logical value to know if output displayed as a latex
     tabular environment.}
+  \item{cutstr}{ Optional digits that cut the length of variable names}
+  \item{toMarkdown}{Logical value to know if output should be displayed as a markdown table for report}
 }
 \value{
   Returns a list with correlations, N for each pair of correlations and

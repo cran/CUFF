@@ -1,7 +1,15 @@
+2018-05-27 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Remove the annoying behavior of only printing the 8 first character of the correlation matrix.
+	* Added an option to cut the variable if you feel like it. Useful for long variable names.
+	* Added a kable options for use in correlation 
+	* Added ftab. A function that adds percentage values between parentheses inside a table. 
+
 2018-01-04 Charles-Édouard Giguère <ce.giguere@gmail.com>
         * Corrected redefinition of method print.correlation from standard package nlme.
 	* Corrected bug with toLatex option when the correlation matrix is asymetrical.
+
 2016-06-27 Charles-Edouard Giguere <ce.giguere@gmail.com>
 	* Added freq, a function that displays frequencies of categorical variables.
+
 2016-05-31 Charles-Edouard Giguere <ce.giguere@gmail.com>
 	* Added xf, a function that applies function across multiple layers.
