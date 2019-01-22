@@ -1,5 +1,17 @@
+2019-01-21 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Make the function view to use DT::datatable as a viewer like in Rstudio.
+	* Added the function clip that exports any table/data.frame/matrix like output
+	  to the clipboard.
+	* Add a function cf to export coef table in lm/glm/lme/lmer/glmer/t-test & others
+	  in the future.
+	* Add a function pv to format p-values according to APA style guide version 6.
+2018-06-13 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Added a Total summary on xf.
+2018-06-07 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Added the meansd function to display mean and sd in a string.
 2018-05-27 Charles-Édouard Giguère <ce.giguere@gmail.com>
-	* Remove the annoying behavior of only printing the 8 first character of the correlation matrix.
+	* Remove the annoying behavior of only printing the 8 first character
+	  of the correlation matrix.
 	* Added an option to cut the variable if you feel like it. Useful for long variable names.
 	* Added a kable options for use in correlation 
 	* Added ftab. A function that adds percentage values between parentheses inside a table. 

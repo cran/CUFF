@@ -5,44 +5,66 @@ importFrom("stats",
            addmargins,
            aggregate,
            chisq.test,
+           confint,
+           coef,
            cor,
            cor.test,
+           family,
            model.frame,
            na.exclude,
            na.pass,
            na.omit,
            na.fail,
+           sd,
            terms)
 
-importFrom("utils",
+importFrom("utils",           
            capture.output,
            write.table)
+
+importFrom("DT",
+           datatable)
+
+importFrom("nlme",
+           intervals)
+
+importFrom("lmerTest",
+           as_lmerModLmerTest)
+
+
 ### Functions to export to users.
 export(
-    ## String utility functions (strutil.R).
-    "%+%",             # Extends the add function for strings.
-    "%n%",             # Repeats s n time (usage: s %n% n)
-    numtostr,          # Converts a numeric to string. Used by print methods.
-    ## Description of continuous variables (desc.R, corr.R, mean.table.R, xf.R).
-    correlation,       # This function compute correlation matrices
-                       #  and associated tests.
-    ## Description of categorical variables (freq.R, cross.R).
-    cross,             # This function creates a crosstab object which
-                       # displays % and statistical test.
-    ftab,              # This function adds percentage to a table for display in report.
-    xf,                # applies a function across a list of factors.
-    xtab,              # Corrects bugs in xtabs associated with NA managements.
-    freq,              # displays % of a categorical variable. 
-    ## Complementary utility functions.
-    ## Print methods.
-    print.cross,       # Print function for freq objects.
-    print.corr,        # Print function for corr objects.
-    print.frequencies, # Print function for frequencies objects.
-    ## Compute sums.
-    sum.n,             # sumn for a minimum number of valid values.
-    Total              # modification of sum that uses na.rm=TRUE as default
-                       # and replaces a result of NA by 0.
-    )
+  ## String utility functions (strutil.R).
+  "%+%",             # Extends the add function for strings.
+  "%n%",             # Repeats s n time (usage: s %n% n)
+  numtostr,          # Converts a numeric to string. Used by print methods.
+  ## Description of continuous variables (desc.R, corr.R, mean.table.R, xf.R).
+  correlation,       # This function compute correlation matrices
+                     #  and associated tests.
+  ## Description of categorical variables (freq.R, cross.R).
+  cross,             # This function creates a crosstab object which
+                     # displays % and statistical test.
+  ftab,              # This function adds percentage to a table for display in report.
+  xf,                # applies a function across a list of factors.
+  xtab,              # Corrects bugs in xtabs associated with NA managements.
+  freq,              # displays % of a categorical variable.
+  meansd,            # display mean (sd).
+  ## Complementary utility functions.
+  ## Print methods.
+  print.cross,       # Print function for freq objects.
+  print.corr,        # Print function for corr objects.
+  print.frequencies, # Print function for frequencies objects.
+  ## Compute sums.
+  sum.n,             # sumn for a minimum number of valid values.
+  Total,             # modification of sum that uses na.rm=TRUE as default
+                     # and replaces a result of NA by 0.
+  ## Miscelaneous functions
+  clip,              # Sends table-like format to clipboard for insert in other programs.
+  cf,                # extract coef from common stats models with optional c.i.
+  pv,                # format pv as in APA style guide version 6.
+  view               # function that send a table-like object to DT::datatable
+   
+)
 
 
 ### Declare S3 methods.

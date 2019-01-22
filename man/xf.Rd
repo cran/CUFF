@@ -7,7 +7,8 @@
   factors. It works like aggregate but returns a table instead. It also
   has a useNA options that adds NA as a level before applying the function.}
 \usage{
-xf(formula,data,FUN, ...,subset,na.action=na.omit,useNA = FALSE)}
+xf(formula, data, FUN, ..., subset, na.action = na.omit, useNA = FALSE, addmargins = TRUE)
+}
 \arguments{
   \item{formula}{ Formula defining the variables. On the left is the
     variable we are applying the function to, on the right, variables
@@ -19,6 +20,7 @@ xf(formula,data,FUN, ...,subset,na.action=na.omit,useNA = FALSE)}
     (see \code{help(aggregate)}).}
   \item{na.action}{Action functions to deal with NA in data file}
   \item{useNA}{Make NA a level of the factors (if any)}
+  \item{addmargins}{Add function applied to the margins of each category}
 }
 \value{
   xf returns an object "xf" that behaves like a table with all
