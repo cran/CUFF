@@ -1,3 +1,9 @@
+2020-09-14 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Remove dependency on openxlsx and replace with xlsx.
+2020-03-12 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Added an utility function to visually see the match between ID, in x/y/both.
+2019-04-01 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Correction to the cf methods to work with paired t-test.
 2019-01-21 Charles-Édouard Giguère <ce.giguere@gmail.com>
 	* Make the function view to use DT::datatable as a viewer like in Rstudio.
 	* Added the function clip that exports any table/data.frame/matrix like output

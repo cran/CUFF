@@ -26,4 +26,7 @@ pourcentage
 ex <- as.table(cbind(3:4,5:6))
 ftab(ex,2)
 }
-\keyword{ftab, table, xtabs, xtab}
+\keyword{ftab}
+\keyword{table}
+\keyword{xtabs}
+\keyword{xtab}

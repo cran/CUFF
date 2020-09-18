@@ -1,6 +1,7 @@
+
 ### import functions from package openxlsx and xtable.
 import(xtable)
-import(openxlsx)
+import(xlsx)
 importFrom("stats",
            addmargins,
            aggregate,
@@ -37,6 +38,7 @@ export(
   ## String utility functions (strutil.R).
   "%+%",             # Extends the add function for strings.
   "%n%",             # Repeats s n time (usage: s %n% n)
+  "%xyb%",           # operator alias for xyboth
   numtostr,          # Converts a numeric to string. Used by print methods.
   ## Description of continuous variables (desc.R, corr.R, mean.table.R, xf.R).
   correlation,       # This function compute correlation matrices
@@ -62,8 +64,9 @@ export(
   clip,              # Sends table-like format to clipboard for insert in other programs.
   cf,                # extract coef from common stats models with optional c.i.
   pv,                # format pv as in APA style guide version 6.
-  view               # function that send a table-like object to DT::datatable
-   
+  view,              # function that send a table-like object to DT::datatable
+  xyboth             # An utility function that show the intersection of two vectors
+                     # of indices (list/data.frame of vectors).
 )
 
 
