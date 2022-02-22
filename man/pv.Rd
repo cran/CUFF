@@ -19,14 +19,15 @@ pv(p, style = 1)
 }
 \details{
   \itemize{    
-    \item{
+    \item
       (1) APA: 2 digits of significance except if p is <0.05. If p < 0.05 we
       use 3 digits of significance except if p < 0.001 when we print
-      "<0.001".}
-    \item{
+      "<0.001".
+    
+    \item
       (2) Other: 4 digits of significance except if p < 0.0001 when we print
       "<0.0001".
-    }
+    
   }
 }
 \author{Charles-\enc{Édouard}{Edouard} \enc{Giguère}{Giguere} }

@@ -36,7 +36,7 @@ xf <- function(formula, data, FUN = NULL, ...,
     data <- dat1
   }
   res <- do.call("aggregate",
-                 list(formula=formula, data=data, FUN=FUN,
+                 list(formula, data=data, FUN=FUN,
                       subset=subset, na.action=na.action, ...))
   if(length(frm.terms)==1){
     terms.length <- length(table(data[,frm.terms],

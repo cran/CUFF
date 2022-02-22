@@ -32,6 +32,11 @@ importFrom("nlme",
 importFrom("lmerTest",
            as_lmerModLmerTest)
 
+importFrom("haven",
+           as_factor)
+
+importFrom("dplyr",
+           "%>%")
 
 ### Functions to export to users.
 export(
@@ -42,7 +47,8 @@ export(
   numtostr,          # Converts a numeric to string. Used by print methods.
   ## Description of continuous variables (desc.R, corr.R, mean.table.R, xf.R).
   correlation,       # This function compute correlation matrices
-                     #  and associated tests.
+  #  and associated tests.
+  column_types,      # Finds column formats to export data. 
   ## Description of categorical variables (freq.R, cross.R).
   cross,             # This function creates a crosstab object which
                      # displays % and statistical test.
@@ -51,6 +57,7 @@ export(
   xtab,              # Corrects bugs in xtabs associated with NA managements.
   freq,              # displays % of a categorical variable.
   meansd,            # display mean (sd).
+  pal_CUFF,          # palette functions
   ## Complementary utility functions.
   ## Print methods.
   print.cross,       # Print function for freq objects.
@@ -64,9 +71,11 @@ export(
   clip,              # Sends table-like format to clipboard for insert in other programs.
   cf,                # extract coef from common stats models with optional c.i.
   pv,                # format pv as in APA style guide version 6.
+  to_csv,            # export data to csv
   view,              # function that send a table-like object to DT::datatable
-  xyboth             # An utility function that show the intersection of two vectors
+  xyboth,            # An utility function that show the intersection of two vectors
                      # of indices (list/data.frame of vectors).
+  to_csv             # Fonction pour exporter data et format en csv.
 )
 
 

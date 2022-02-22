@@ -1,3 +1,11 @@
+2022-02-14 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Adjustment for the changes in the new formula parameters.
+	* Added to_csv to export data into csv with formats.
+	* Added pal_CUFF a palette for graph.
+2021-09-22 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Added export = "tex" to print.cross.
+2021-05-12 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Added model glmer to CUFF::cf.
 2020-09-14 Charles-Édouard Giguère <ce.giguere@gmail.com>
 	* Remove dependency on openxlsx and replace with xlsx.
 2020-03-12 Charles-Édouard Giguère <ce.giguere@gmail.com>

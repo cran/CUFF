@@ -153,6 +153,28 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
                                               function(x) sprintf(tabformat[1], x) )
         }    
     }
+    ## glmer
+    else if(inherits(x, "glmerMod") ){
+        tabformat <- sprintf("%%.%if",signif)
+        xcf <- summary(x)$coefficient
+        xcf <- as.data.frame(xcf)
+        names(xcf) <- c("Est.", "s.e.", "Z", "P(>|Z|)")
+        if(length(tabformat) ==  1){
+            xcf[,c(1:2, 3)] <- sapply(xcf[,c(1:2, 3)],
+                                      function(x) sprintf(tabformat, x))
+        }
+        else{
+            for(i in 1:3)
+                xcf[, c(1:3)[i]] <- sprintf(tabformat[i], xcf[,c(1:3)[i]])
+        }
+        xcf[,4] <- pv(xcf[,4], style = pv.style)
+        if(addci){
+            xci <- suppressMessages(confint(x, parm = "beta_"))
+            xcf[,c("lower 95% ci",
+                   "upper 95% ci")] <- sapply(xci,
+                                              function(x) sprintf(tabformat[1], x) )
+        }    
+    }
     ## other model.
     else{
         stop("Not yet implemented for this type of model.")

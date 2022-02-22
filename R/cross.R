@@ -34,7 +34,10 @@ cross <- function(x, ...){
 ### Results can be exported to pdf (latex is needed to do that).
 ###  or to an Excel spreadsheet (xlsx).
 print.cross <- function(x, ..., test = "chisq.test", export = NULL){
-    p <- paste(x$NAMES[1], x$NAMES[2], sep = "*")
+
+  p <- paste(x$NAMES[1], x$NAMES[2], sep = "*")
+  if(!("tex" %in% export)){
+    
     cat("Contingency table for ", p, "\n\n", sep = "")
     print.table(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
                 zero.print = ".")
@@ -47,143 +50,218 @@ print.cross <- function(x, ..., test = "chisq.test", export = NULL){
 
     cat("\n\n", "Statistics for ", p, "\n\n", sep = "")
     for(i in test){
-        FUN <- match.fun(i)
-        print(FUN(x$T))
+      FUN <- match.fun(i)
+      print(FUN(x$T))
     }
-    if("pdf" %in% export){
-        wd <- setwd(Sys.getenv("temp"))
-        f1 <- file("cross_output.tex",
-                   open="w")
-        writeLines(con = f1,
-                   text = c("\\documentclass{article}",
-                            "\\begin{document}",
-                            "\\begin{table}[htp!]",
-                            "\\centering",
-                            "\\pagenumbering{gobble}"))
-        
-        xt1 <- xtable(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
-                      align = paste("l|",paste(rep("r",dim(x$T)[2]),collapse=""),
-                                    "|r",sep=""),
-                      digits= 0)
-        print.xtable(xt1,file=f1,append=TRUE,
-                     hline.after = c(0,0,dim(x$T)[1]),
-                     floating=FALSE)
-        cat("\\caption{Contingency table for ",
-            sub("[*]","$\\\\times$",p),"}",file=f1,"")
-        cat("\\end{table}", file = f1)
-        writeLines(con = f1,
-                   text = c("\\begin{table}[htp!]",
-                            "\\centering"))
-        xt2 <- xtable(round(x$PCT.ROW.T*100, 2),
-                      align = paste("l|",
-                                    paste(rep("r",dim(x$PCT.ROW.T)[2]-1),
-                                          collapse=""),"|r",
-                                    sep=""),
-                      digits= 2)
-        print.xtable(xt2,file=f1,append=TRUE,
-                     hline.after = c(0,0,dim(x$PCT.ROW.T)[1]),
-                     floating=FALSE)
-        cat("\\caption{Percentages by row for ",
-            sub("[*]","$\\\\times$",p),"}",file=f1,"")
-        cat("\\end{table}", file = f1)
-                writeLines(con = f1,
-                   text = c("\\begin{table}[htp!]",
-                            "\\centering"))
-        xt2 <- xtable(round(x$PCT.COL.T*100, 2),
-                      align = paste("l|",
-                                    paste(rep("r",dim(x$PCT.COL.T)[2]),
-                                          collapse=""),"|",
-                                    sep=""),
-                      digits= 2)
-        print.xtable(xt2,file=f1,append=TRUE,
-                     hline.after = c(0,0,dim(x$PCT.COL.T)[1]-1),
-                     floating=FALSE)
-        cat("\\caption{Percentages by column for ",
-            sub("[*]","$\\\\times$",p),"}",file=f1,"",fill=TRUE)
-        cat("\\end{table}", file = f1,fill=TRUE)
-        if("chisq.test" %in% test){
-            test <- setdiff(test,"chisq.test")
-            tst <- chisq.test(x$T)
-            writeLines(c("\\begin{table}",
-                         "\\centering",
-                         "\\begin{tabular}{rrr}",
-                         "\\hline",
-                         "$\\chi^2$ & df & p.value\\\\",
-                         "\\hline\\hline",
-                         sprintf("%5.2f & %d & %6.4f\\\\",tst$statistic,
-                                 tst$parameter,tst$p.value),
-                         "\\hline",
-                         "\\end{tabular}",
-                         paste("\\caption{$\\chi^2$ test for ",
-                               sub("[*]","$\\\\times$",p),"}"),
-                         "\\end{table}"),
-                         con=f1)
-        }
-        writeLines(c("\\begin{table}",
-                         "\\centering",
-                         "\\begin{verbatim}"),
-                       con = f1)
-        for(i in test){
-
-            FUN <- match.fun(i)
-            writeLines(capture.output(FUN(x$T)), con = f1)
-
-
-        }
-        writeLines(c("\\end{verbatim}",
-                     paste("\\caption{Other tests for ",
-                           sub("[*]","$\\\\times$",p),"}"),
-                     "\\end{table}"),
-                   con = f1)
-        cat("\\end{document}", file = f1)
-        close(f1)
-        out <- shell("pdflatex cross_output.tex",intern = TRUE)
-        shell("start cross_output.pdf")
-        setwd(wd)
+  }
+  if("tex" %in% export){
+    writeLines(c("\\begin{table}[htp!]",
+                 "\\centering"))
+    
+    xt1 <- xtable(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
+                  align = paste("l|",paste(rep("r",dim(x$T)[2]),collapse=""),
+                                "|r",sep=""),
+                  digits= 0)
+    print.xtable(xt1,
+                 hline.after = c(0,0,dim(x$T)[1]),
+                 floating=FALSE)
+    cat("\\caption{Contingency table for ",
+        sub("[*]","$\\\\times$",p),"}","")
+    cat("\\end{table}")
+    writeLines(text = c("\\begin{table}[htp!]",
+                        "\\centering"))
+    xt2 <- xtable(round(x$PCT.ROW.T*100, 2),
+                  align = paste("l|",
+                                paste(rep("r",dim(x$PCT.ROW.T)[2]-1),
+                                      collapse=""),"|r",
+                                sep=""),
+                  digits= 2)
+    print.xtable(xt2,
+                 hline.after = c(0,0,dim(x$PCT.ROW.T)[1]),
+                 floating=FALSE)
+    cat("\\caption{Percentages by row for ",
+        sub("[*]","$\\\\times$",p),"}","")
+    cat("\\end{table}")
+    writeLines(text = c("\\begin{table}[htp!]",
+                        "\\centering"))
+    xt2 <- xtable(round(x$PCT.COL.T*100, 2),
+                  align = paste("l|",
+                                paste(rep("r",dim(x$PCT.COL.T)[2]),
+                                      collapse=""),"|",
+                                sep=""),
+                  digits= 2)
+    print.xtable(xt2,
+                 hline.after = c(0,0,dim(x$PCT.COL.T)[1]-1),
+                 floating=FALSE)
+    cat("\\caption{Percentages by column for ",
+        sub("[*]","$\\\\times$",p),"}","",fill=TRUE)
+    cat("\\end{table}")
+    if("chisq.test" %in% test){
+      test <- setdiff(test,"chisq.test")
+      tst <- suppressWarnings(chisq.test(x$T))
+      writeLines(c("\\begin{table}",
+                   "\\centering",
+                   "\\begin{tabular}{rrr}",
+                   "\\hline",
+                   "$\\chi^2$ & df & p.value\\\\",
+                   "\\hline\\hline",
+                   sprintf("%5.2f & %d & %6.4f\\\\",tst$statistic,
+                           tst$parameter,tst$p.value),
+                   "\\hline",
+                   "\\end{tabular}",
+                   paste("\\caption{$\\chi^2$ test for ",
+                         sub("[*]","$\\\\times$",p),"}"),
+                   "\\end{table}"))
     }
-    if("xlsx" %in% export){
-        wd <- setwd(Sys.getenv("temp"))
-        
-        wb <- createWorkbook()
-        FS <- createSheet(wb, "Frequencies")
-        RS <- createSheet(wb, "Row percentages")
-        CS <- createSheet(wb, "Column percentages")
+    writeLines(c("\\begin{table}",
+                 "\\centering",
+                 "\\begin{verbatim}"))
+    for(i in test){
 
-        R.FS <- createRow(FS, rowIndex = 2)
-        C.FS <- createCell(R.FS, colIndex = 2)
-        setCellValue(C.FS[[1,1]],
-                     paste("Contingency table for",p, sep = " "))
-        addDataFrame(as.data.frame.matrix(addmargins(x$T, FUN = Total,
-                                                     quiet = TRUE)),
-                     FS, startRow = 3, startColumn = 2)
+      FUN <- match.fun(i)
+      writeLines(capture.output(FUN(x$T)))
 
-        R.RS <- createRow(RS, rowIndex = 2)
-        C.RS <- createCell(R.RS, colIndex = 2)
-        setCellValue(C.RS[[1,1]],
-                     paste("Row percentages for",p, sep = " "))        
-        addDataFrame(as.data.frame.matrix(round(x$PCT.ROW.T * 100,2)),
-                     sheet = RS, startRow = 3, startColumn = 2)
-        
-        R.CS <- createRow(CS, rowIndex = 2)
-        C.CS <- createCell(R.CS, colIndex = 2)
-        setCellValue(C.CS[[1,1]],
-                     paste("Col percentages for",p, sep = " "))        
-        addDataFrame(as.data.frame.matrix(round(x$PCT.COL.T * 100,2)),
-                     sheet = CS, startRow = 3, startColumn = 2)
-        
-        AS  <- createSheet(wb, "Statistics")
-        stat.output <- character()
-        for(i in test){
-          FUN <- match.fun(i)
-          stat.output <- c(stat.output,
-                           capture.output(FUN(x$T)))
-        }
-        addDataFrame(stat.output, AS, startRow = 4, startColumn = 2,
-                     col.names = FALSE, row.names = FALSE)
-        saveWorkbook(wb, file = "cross_output.xlsx")
-        shell("start cross_output.xlsx")
-        setwd(wd)
+
     }
+    writeLines(c("\\end{verbatim}",
+                 paste("\\caption{Other tests for ",
+                       sub("[*]","$\\\\times$",p),"}"),
+                 "\\end{table}"))
+  }
+  if("pdf" %in% export){
+    wd <- setwd(Sys.getenv("temp"))
+    f1 <- file("cross_output.tex",
+               open="w")
+    writeLines(con = f1,
+               text = c("\\documentclass{article}",
+                        "\\begin{document}",
+                        "\\begin{table}[htp!]",
+                        "\\centering",
+                        "\\pagenumbering{gobble}"))
+    
+    xt1 <- xtable(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
+                  align = paste("l|",paste(rep("r",dim(x$T)[2]),collapse=""),
+                                "|r",sep=""),
+                  digits= 0)
+    print.xtable(xt1,file=f1,append=TRUE,
+                 hline.after = c(0,0,dim(x$T)[1]),
+                 floating=FALSE)
+    cat("\\caption{Contingency table for ",
+        sub("[*]","$\\\\times$",p),"}",file=f1,"")
+    cat("\\end{table}", file = f1)
+    writeLines(con = f1,
+               text = c("\\begin{table}[htp!]",
+                        "\\centering"))
+    xt2 <- xtable(round(x$PCT.ROW.T*100, 2),
+                  align = paste("l|",
+                                paste(rep("r",dim(x$PCT.ROW.T)[2]-1),
+                                      collapse=""),"|r",
+                                sep=""),
+                  digits= 2)
+    print.xtable(xt2,file=f1,append=TRUE,
+                 hline.after = c(0,0,dim(x$PCT.ROW.T)[1]),
+                 floating=FALSE)
+    cat("\\caption{Percentages by row for ",
+        sub("[*]","$\\\\times$",p),"}",file=f1,"")
+    cat("\\end{table}", file = f1)
+    writeLines(con = f1,
+               text = c("\\begin{table}[htp!]",
+                        "\\centering"))
+    xt2 <- xtable(round(x$PCT.COL.T*100, 2),
+                  align = paste("l|",
+                                paste(rep("r",dim(x$PCT.COL.T)[2]),
+                                      collapse=""),"|",
+                                sep=""),
+                  digits= 2)
+    print.xtable(xt2,file=f1,append=TRUE,
+                 hline.after = c(0,0,dim(x$PCT.COL.T)[1]-1),
+                 floating=FALSE)
+    cat("\\caption{Percentages by column for ",
+        sub("[*]","$\\\\times$",p),"}",file=f1,"",fill=TRUE)
+    cat("\\end{table}", file = f1,fill=TRUE)
+    if("chisq.test" %in% test){
+      test <- setdiff(test,"chisq.test")
+      tst <- chisq.test(x$T)
+      writeLines(c("\\begin{table}",
+                   "\\centering",
+                   "\\begin{tabular}{rrr}",
+                   "\\hline",
+                   "$\\chi^2$ & df & p.value\\\\",
+                   "\\hline\\hline",
+                   sprintf("%5.2f & %d & %6.4f\\\\",tst$statistic,
+                           tst$parameter,tst$p.value),
+                   "\\hline",
+                   "\\end{tabular}",
+                   paste("\\caption{$\\chi^2$ test for ",
+                         sub("[*]","$\\\\times$",p),"}"),
+                   "\\end{table}"),
+                 con=f1)
+    }
+    writeLines(c("\\begin{table}",
+                 "\\centering",
+                 "\\begin{verbatim}"),
+               con = f1)
+    for(i in test){
+
+      FUN <- match.fun(i)
+      writeLines(capture.output(FUN(x$T)), con = f1)
+
+
+    }
+    writeLines(c("\\end{verbatim}",
+                 paste("\\caption{Other tests for ",
+                       sub("[*]","$\\\\times$",p),"}"),
+                 "\\end{table}"),
+               con = f1)
+    cat("\\end{document}", file = f1)
+    close(f1)
+    out <- shell("pdflatex cross_output.tex",intern = TRUE)
+    shell("start cross_output.pdf")
+    setwd(wd)
+  }
+  if("xlsx" %in% export){
+    wd <- setwd(Sys.getenv("temp"))
+    
+    wb <- createWorkbook()
+    FS <- createSheet(wb, "Frequencies")
+    RS <- createSheet(wb, "Row percentages")
+    CS <- createSheet(wb, "Column percentages")
+
+    R.FS <- createRow(FS, rowIndex = 2)
+    C.FS <- createCell(R.FS, colIndex = 2)
+    setCellValue(C.FS[[1,1]],
+                 paste("Contingency table for",p, sep = " "))
+    addDataFrame(as.data.frame.matrix(addmargins(x$T, FUN = Total,
+                                                 quiet = TRUE)),
+                 FS, startRow = 3, startColumn = 2)
+
+    R.RS <- createRow(RS, rowIndex = 2)
+    C.RS <- createCell(R.RS, colIndex = 2)
+    setCellValue(C.RS[[1,1]],
+                 paste("Row percentages for",p, sep = " "))        
+    addDataFrame(as.data.frame.matrix(round(x$PCT.ROW.T * 100,2)),
+                 sheet = RS, startRow = 3, startColumn = 2)
+    
+    R.CS <- createRow(CS, rowIndex = 2)
+    C.CS <- createCell(R.CS, colIndex = 2)
+    setCellValue(C.CS[[1,1]],
+                 paste("Col percentages for",p, sep = " "))        
+    addDataFrame(as.data.frame.matrix(round(x$PCT.COL.T * 100,2)),
+                 sheet = CS, startRow = 3, startColumn = 2)
+    
+    AS  <- createSheet(wb, "Statistics")
+    stat.output <- character()
+    for(i in test){
+      FUN <- match.fun(i)
+      stat.output <- c(stat.output,
+                       capture.output(FUN(x$T)))
+    }
+    addDataFrame(stat.output, AS, startRow = 4, startColumn = 2,
+                 col.names = FALSE, row.names = FALSE)
+    saveWorkbook(wb, file = "cross_output.xlsx")
+    shell("start cross_output.xlsx")
+    setwd(wd)
+  }
 
 }
 
@@ -238,3 +316,10 @@ Total = function(x){
     sx <- sum(x, na.rm = TRUE)
     ifelse(is.na(sx), 0, sx)
 }
+
+
+### require(xtable, quietly = TRUE, warn.conflicts = FALSE)
+### 
+### df <- expand.grid(test = 1:2, toast = 1:2)
+### xt1 <- xtabs( ~ test + toast, df)
+### print(cross(xt1), export = "tex")
