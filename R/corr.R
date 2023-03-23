@@ -1,8 +1,7 @@
-###     -*- Coding: utf-8 -*-          ###
-### Analyste Charles-Édouard Giguère   ###
-
+###     -*- Coding: utf-8 -*-
+### Analyste Charles-Édouard Giguère
 ### Function to create an object of that contains a matrix of bivariate
-### correlations, their associated N and their p-values.
+### correlations their associated N and their p-values
 
 correlation <- function(x, y = NULL, method = "pearson",
                         alternative = "two.sided", exact = NULL,
@@ -100,7 +99,7 @@ correlation <- function(x, y = NULL, method = "pearson",
     ## Compute p-values using cor.test.
     if(symmetric){
         P <- matrix(NA, nrow = dimx[2], ncol = dimx[2])
-        P[lower.tri(P)] <- P[upper.tri(P)] <-
+        P[lower.tri(P)] <-
             mapply(
                 function(i, j){
                     cor.test(x[,i], x[,j], alternative = alternative,
@@ -108,6 +107,7 @@ correlation <- function(x, y = NULL, method = "pearson",
                              continuity = continuity)$p.value
                 },
                 col(R)[lower.tri(R)],row(R)[lower.tri(R)])
+        P[upper.tri(P)] <- t(P)[upper.tri(P)]
     }
     else{
         P <- matrix(NA, nrow = dimx[2], ncol = dimy[2])
@@ -155,7 +155,7 @@ correlation.formula <- function(x, ..., data = NULL){
 
 ### Print methods for a correlation object.
 print.corr <- function(x, ..., toLatex = FALSE, cutstr = NULL, toMarkdown = FALSE){
-  
+
   if(!x$Sym){
     ## Send to print.corr.unsym if the correlation matrix is not symmetric.
     print.corr.unsym(x, ..., toLatex = toLatex, cutstr = cutstr,
@@ -164,12 +164,12 @@ print.corr <- function(x, ..., toLatex = FALSE, cutstr = NULL, toMarkdown = FALS
   else {
     ## Number of variables
     dx <- dim(x$R)[1]
-    
+
     ## Name of variables.
     nom <- attr(x, "nomx")
     lnom <- nchar(nom)
 
-    ## if not cutstr takes the value of the largest variable name. 
+    ## if not cutstr takes the value of the largest variable name.
     if(is.null(cutstr))
       cutstr <- max(lnom, 7)
     else
@@ -177,7 +177,7 @@ print.corr <- function(x, ..., toLatex = FALSE, cutstr = NULL, toMarkdown = FALS
 
     if(toLatex & toMarkdown)
       stop("Cannot choose both Latex and Markdown format")
-    
+
     if(!toLatex & !toMarkdown){
       ## Estimating necessary space to print correlation.
       ## 13 characters are reserved for margins.
@@ -257,20 +257,20 @@ print.corr <- function(x, ..., toLatex = FALSE, cutstr = NULL, toMarkdown = FALS
         cat(sub("P[(]( +)(.*)[)] [|]", "P(\\2)\\1 |",
                 "|P(" %+% nom[i] %+% ") |"), sep = "")
         ptemp <- ifelse(x$P[i, 1:(i-1)] < 0.0001,"<0.0001",
-                        sprintf("%.4f",x$P[i, 1:(i-1)]))        
+                        sprintf("%.4f",x$P[i, 1:(i-1)]))
         cat(sprintf(" " %+% formatnom,ptemp) %+% "|", sep = "")
         cat(rep(" " %n% (cutstr + 1) %+% "|", dx - i ), "\n", sep = "")
-      }      
+      }
     }
   }
-}  
+}
 
 
 print.corr.unsym <- function(x, ..., toLatex = FALSE, cutstr = NULL,
                              toMarkdown = FALSE){
   ## Variable dimensions.
   dxy <- dim(x$R)
-  
+
   ## Variable names (x, y).
   nomx <- attr(x, "nomx")
   nomy <- attr(x, "nomy")
@@ -283,10 +283,10 @@ print.corr.unsym <- function(x, ..., toLatex = FALSE, cutstr = NULL,
 
   if(toLatex & toMarkdown)
     stop("Cannot choose both Latex and Markdown format")
-  
+
   ## Standard print
   if(!toLatex & !toMarkdown){
-    
+
     ## Estimating necessary space to print correlation.
     ## 5 + cutstr characters are reserved for margins.
     width <- options()$width - 5 - cutstr
@@ -359,7 +359,7 @@ print.corr.unsym <- function(x, ..., toLatex = FALSE, cutstr = NULL,
         rep(("-" %n% (cutstr )) %+% ":|", dy), "\n", sep = "")
     for(i in 1:dx){
       cat(sub("R[(]( +)(.*)[)] [|]", "R(\\2)\\1 |",
-              "|R(" %+% nomx[i] %+% ") |" ), sep = "")    
+              "|R(" %+% nomx[i] %+% ") |" ), sep = "")
       cat(numtostr(x$R[i, 1:dy], nch = cutstr + 1, digits = 4) %+% "|", "\n", sep = "")
       cat(sub("N[(]( +)(.*)[)] [|]", "N(\\2)\\1 |",
               "|N(" %+% nomx[i] %+% ") |"), sep = "")
@@ -368,9 +368,8 @@ print.corr.unsym <- function(x, ..., toLatex = FALSE, cutstr = NULL,
       cat(sub("P[(]( +)(.*)[)] [|]", "P(\\2)\\1 |",
               "|P(" %+% nomx[i] %+% ") |"), sep = "")
       ptemp <- ifelse(x$P[i, 1:dy] < 0.0001,
-                      "<0.0001", sprintf("%.4f",x$P[i, 1:dy]))        
+                      "<0.0001", sprintf("%.4f",x$P[i, 1:dy]))
       cat(sprintf(" " %+% formatnom,ptemp) %+% "|", "\n", sep = "")
-    }      
+    }
   }
 }
-  

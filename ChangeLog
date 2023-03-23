@@ -1,3 +1,10 @@
+2023-03-22 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Change to the corr method to correct an error in the symmetry of
+	the P matrix.
+	* Put back openxlsx because it doesn't depend on Java.
+2022-05-01 Charles-Édouard Giguère <ce.giguere@gmail.com>
+	* Change method clip to use clipr package because of a problem
+	with clipboard on windows in the new release of R. 
 2022-02-14 Charles-Édouard Giguère <ce.giguere@gmail.com>
 	* Adjustment for the changes in the new formula parameters.
 	* Added to_csv to export data into csv with formats.

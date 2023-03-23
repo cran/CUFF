@@ -1,7 +1,6 @@
-
 ### import functions from package openxlsx and xtable.
 import(xtable)
-import(xlsx)
+import(openxlsx)
 importFrom("stats",
            addmargins,
            aggregate,
@@ -19,7 +18,7 @@ importFrom("stats",
            sd,
            terms)
 
-importFrom("utils",           
+importFrom("utils",
            capture.output,
            write.table)
 
@@ -48,7 +47,7 @@ export(
   ## Description of continuous variables (desc.R, corr.R, mean.table.R, xf.R).
   correlation,       # This function compute correlation matrices
   #  and associated tests.
-  column_types,      # Finds column formats to export data. 
+  column_types,      # Finds column formats to export data.
   ## Description of categorical variables (freq.R, cross.R).
   cross,             # This function creates a crosstab object which
                      # displays % and statistical test.

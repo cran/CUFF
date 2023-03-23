@@ -12,7 +12,7 @@
 
 ### to_csv/from_csv is a function used to export data and format factors in two csv files
 ### 1) The raw data and 2) the format data.
-### so they can be easily recuperated but more importantly shared with others. 
+### so they can be easily recuperated but more importantly shared with others.
 
 ### All variables are formated in this way,
 ### | variable | label | format | labels |
@@ -26,16 +26,16 @@
 ###  * character (Character field)
 ###  * Date (as YYYY-mm-dd)
 ###  * posix (for time and date as YYYY-mm-dd hh:mm:ss)
-### 
+###
 ###  * other miscellaneous data type are indicated as untreated.
 ###  When a data.frame contains multivariate data it is splitted
 ###  into single columns.
 
-# Extract column types. 
+# Extract column types.
 column_types <- function(data){
   p   <- dim(data)[2]
   type <- rep("other", p)
-  
+
   type[sapply(data, is.numeric)]   <- "numeric"
   type[sapply(data, is.factor)]    <- "factor"
   type[sapply(data, is.character)] <- "character"
@@ -45,10 +45,10 @@ column_types <- function(data){
 }
 
 
-### Function to export data in csv with a format csv companion file. 
+### Function to export data in csv with a format csv companion file.
 to_csv <- function(data, file){
   dim_data <- dim(data)
-  
+
   N <- dim_data[1]
   p <- dim_data[2]
   for(i in 1:p){
@@ -72,7 +72,7 @@ to_csv <- function(data, file){
   ### labelled vector.
   ###
   ### Now we make a copy of the data.frame (tbs = to be saved) using numeric
-  ### value only instead of factors and string instead of date and POSIX. 
+  ### value only instead of factors and string instead of date and POSIX.
   data_type <- column_types(data)
   data_tbs  <- data
   data_tbs[,data_type %in% "factor"] <- sapply(data_tbs[,data_type %in% "factor"],
@@ -81,7 +81,7 @@ to_csv <- function(data, file){
                                              format, format = "%Y-%m-%d")
   data_tbs[,data_type %in% "POSIX"] <- sapply(data_tbs[,data_type %in% "POSIX"],
                                               format,
-                                              format = "%Y-%m-%d %H:%M:%OS")  
+                                              format = "%Y-%m-%d %H:%M:%OS")
   ### We eliminate newline character because they mess csv file.
   data_tbs[, data_type %in% "character"] <-
     sapply(data_tbs[, data_type %in% "character"],
@@ -123,12 +123,12 @@ to_csv <- function(data, file){
     SIMPLIFY = FALSE)
   fmt <- fmt  %>%
     merge( dplyr::bind_rows(labs), all.x = TRUE)
-  
+
   fmt <- fmt[order(fmt$order),]
   f2 <- file(sub("[.]", "_fmt.",file), open = "w", encoding = "utf-8")
   write.table(fmt[,c("variable", "label", "format", "value", "labels")],
               sep = ",", row.names = FALSE,
               file =  f2)
-  close.connection(f2)  
+  close.connection(f2)
 }
 

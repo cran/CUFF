@@ -9,9 +9,6 @@
 ###  \_____/           ==\\_____//     ###
 ##########################################
 
-
-
-
 xyboth <- function(x, y){
 
   ## Must be either 2 vectors or 2 matrix/data.frame of same size.
@@ -42,15 +39,15 @@ xyboth <- function(x, y){
      ){
     stop("Variables INX/INY/DIMX/DIMY are reserved for this command")
   }
-  
+
   ## No test for dimensionality of index but will result no intersection in x and y.
 
   xc[,"INX"]  <- 1
   xc[,"DIMX"]  <- sprintf(sprintf("%%0%dd",nchar(dim(xc)[1])),1:dim(xc)[1])
- 
+
   yc[,"INY"]  <- 1
   yc[,"DIMY"] <- sprintf(sprintf("%%0%dd",nchar(dim(yc)[1])),1:dim(yc)[1])
-  
+
   xyc <- merge(xc, yc,
                all = TRUE)
   row.names(xyc) <- sprintf("x:%s y:%s",
@@ -62,7 +59,7 @@ xyboth <- function(x, y){
   xyc <- xyc[order(row.names(xyc)),]
   list(x = xyc[xyc$INX %in% 1 & xyc$INY %in% 0, varxy],
        y = xyc[xyc$INX %in% 0 & xyc$INY %in% 1, varxy],
-       both = xyc[xyc$INX %in% 1 & xyc$INY %in% 1, varxy])  
+       both = xyc[xyc$INX %in% 1 & xyc$INY %in% 1, varxy])
 }
 
 `%xyb%` <- xyboth

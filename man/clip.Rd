@@ -22,9 +22,6 @@ clip(x, sep = "\t", row.names = FALSE, quote = FALSE, ...)
 }
 
 \author{Charles-\enc{Édouard}{Edouard} \enc{Giguère}{Giguere} }
-\examples{
-clip(iris[1:6,])
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ clip }

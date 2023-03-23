@@ -1,4 +1,9 @@
-### Extract coefficient (or params) from common stats model lm/glm/lme/lmer/glmer/t-test. 
+### -*- Coding: utf-8 -*-
+### Author: Charles-Édouard Giguère
+###
+### Function that extract coefficient (or params) from common
+### stats model lm/glm/lme/lmer/glmer/t-test.
+### Used to copy coefficients quickly into a report.
 
 cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
                expcf = ifelse("glm" %in% class(x)  &
@@ -6,7 +11,6 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
                               TRUE, FALSE), ...){
     xcf  <- data.frame()
     xclass <- class(x)
-
 
     ## linear model.
     if(xclass[1] == "lm" ){
@@ -29,9 +33,9 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
                    "upper 95% ci")] <- sapply(xci,
                                               function(x)
                                                   sprintf(tabformat[1], x) )
-        }      
+        }
     }
-    ## general linear model.     
+    ## general linear model.
     else if(xclass[1] == "glm"){
         tabformat <- sprintf("%%.%if",signif)
         xcf <- coef(summary(x))
@@ -39,10 +43,12 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         names(xcf) <- c("Est.", "s.e.", "z", "P(>|z|)")
         if(expcf){
             xcf[["exp(Est.)"]] <- sprintf(tabformat[1], exp(xcf[,"Est."]))
-        }     
+        }
         if(length(tabformat) ==  1){
-            xcf[,1:3] <- sapply(xcf[,1:3], function(x) sprintf(tabformat, x))
-            
+            xcf[,1:3] <- sapply(xcf[,1:3],
+                                function(x)
+                                    sprintf(tabformat, x))
+
         }
         else{
             for(i in 1:3)
@@ -52,8 +58,10 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         if(addci){
             xci <- exp(suppressMessages(confint(x)))
             xcf[,c("lower 95% ci",
-                   "upper 95% ci")] <- sapply(xci, function(x) sprintf(tabformat[1], x) )
-        }          
+                   "upper 95% ci")] <- sapply(xci,
+                                              function(x)
+                                                  sprintf(tabformat[1], x) )
+        }
     }
     ## mixed-effect linear model.
     else if(xclass[1] == "lme" ){
@@ -62,7 +70,9 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         xcf <- as.data.frame(xcf)
         names(xcf) <- c("Est.", "s.e.", "df", "t", "P(>|t|)")
         if(length(tabformat) ==  1){
-            xcf[,c(1:2, 4)] <- sapply(xcf[,c(1:2, 4)], function(x) sprintf(tabformat, x))
+            xcf[,c(1:2, 4)] <- sapply(xcf[,c(1:2, 4)],
+                                      function(x)
+                                          sprintf(tabformat, x))
         }
         else{
             for(i in 1:3)
@@ -72,8 +82,10 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         if(addci){
             xci <- intervals(x)$fixed[,c(1,3)]
             xcf[,c("lower 95% ci",
-                   "upper 95% ci")] <- sapply(xci, function(x) sprintf(tabformat[1], x) )
-        }    
+                   "upper 95% ci")] <- sapply(xci,
+                                              function(x)
+                                                  sprintf(tabformat[1], x) )
+        }
     }
     ## t-test.
     else if(xclass[1] == "htest" ){
@@ -81,16 +93,18 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
             tabformat <- sprintf("%%.%if",signif)
             xcf <- data.frame(x$estimate[1], x$estimate[2], -diff(x$estimate),
                               x$statistic, x$parameter, x$p.value, row.names = "")
-            nn1 <- sub("^mean in group (.*)|mean of (.*)$", "mean(\\1\\2)",              
+            nn1 <- sub("^mean in group (.*)|mean of (.*)$", "mean(\\1\\2)",
                        names(x$estimate))
             names(xcf) <- c(nn1, "Diff.", "t", "df", "P(>|t|)")
             if(length(tabformat) ==  1){
                 xcf[,1:4] <- sapply(xcf[,1:4],
-                                    function(x) sprintf(tabformat, x))
+                                    function(x)
+                                        sprintf(tabformat, x))
             }
-            else{        
+            else{
                 xcf[, 1:3] <- sapply(xcf[,1:3],
-                                     function(x) sprintf(tabformat[1], x))
+                                     function(x)
+                                         sprintf(tabformat[1], x))
                 xcf[,4] <- sprintf(tabformat[2], xcf[,4])
             }
             xcf[,5] <- sprintf("%.1f", xcf[,5])
@@ -111,11 +125,13 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
             names(xcf) <- c("mean diff.", "t", "df", "P(>|t|)")
             if(length(tabformat) ==  1){
                 xcf[,1:2] <- sapply(xcf[,1:2],
-                                    function(x) sprintf(tabformat, x))
-            } 
-            else{        
+                                    function(x)
+                                        sprintf(tabformat, x))
+            }
+            else{
                 xcf[, 1] <- sapply(xcf[,1],
-                                   function(x) sprintf(tabformat[1], x))
+                                   function(x)
+                                       sprintf(tabformat[1], x))
                 xcf[,2] <- sprintf(tabformat[2], xcf[,2])
             }
             xcf[,3] <- sprintf("%.1f", xcf[,3])
@@ -126,9 +142,9 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
                        "upper 95% ci")] <- sapply(xci,
                                                   function(x)
                                                       sprintf(tabformat[1], x))
-            }          
+            }
         }
-    }        
+    }
     ## lmer
     else if(xclass[1] %in% c("lmerMod", "lmerModLmerTest") ){
         tabformat <- sprintf("%%.%if",signif)
@@ -139,19 +155,22 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         names(xcf) <- c("Est.", "s.e.", "df", "t", "P(>|t|)")
         if(length(tabformat) ==  1){
             xcf[,c(1:2, 4)] <- sapply(xcf[,c(1:2, 4)],
-                                      function(x) sprintf(tabformat, x))
+                                      function(x)
+                                          sprintf(tabformat, x))
         }
         else{
             for(i in 1:3)
-                xcf[, c(1:2, 4)[i]] <- sprintf(tabformat[i], xcf[,c(1:2, 4)[i]])
+                xcf[, c(1:2, 4)[i]] <- sprintf(tabformat[i],
+                                               xcf[,c(1:2, 4)[i]])
         }
         xcf[,5] <- pv(xcf[,5], style = pv.style)
         if(addci){
             xci <- suppressMessages(confint(x, parm = "beta_"))
             xcf[,c("lower 95% ci",
                    "upper 95% ci")] <- sapply(xci,
-                                              function(x) sprintf(tabformat[1], x) )
-        }    
+                                              function(x)
+                                                  sprintf(tabformat[1], x) )
+        }
     }
     ## glmer
     else if(inherits(x, "glmerMod") ){
@@ -161,19 +180,22 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
         names(xcf) <- c("Est.", "s.e.", "Z", "P(>|Z|)")
         if(length(tabformat) ==  1){
             xcf[,c(1:2, 3)] <- sapply(xcf[,c(1:2, 3)],
-                                      function(x) sprintf(tabformat, x))
+                                      function(x)
+                                          sprintf(tabformat, x))
         }
         else{
             for(i in 1:3)
-                xcf[, c(1:3)[i]] <- sprintf(tabformat[i], xcf[,c(1:3)[i]])
+                xcf[, c(1:3)[i]] <- sprintf(tabformat[i],
+                                            xcf[,c(1:3)[i]])
         }
         xcf[,4] <- pv(xcf[,4], style = pv.style)
         if(addci){
             xci <- suppressMessages(confint(x, parm = "beta_"))
             xcf[,c("lower 95% ci",
                    "upper 95% ci")] <- sapply(xci,
-                                              function(x) sprintf(tabformat[1], x) )
-        }    
+                                              function(x)
+                                                  sprintf(tabformat[1], x) )
+        }
     }
     ## other model.
     else{
@@ -182,5 +204,3 @@ cf <- function(x, addci = TRUE, pv.style = 1, signif = 2,
     }
     as.data.frame(xcf)
 }
-
-

@@ -1,6 +1,8 @@
-#### -*- Coding: utf-8 -*-
-#### Methode pour afficher des frequences de facteur et les conserver dans des listes mais les afficher
-#### dans un format interessant.
+### -*- Coding: utf-8 -*-
+### Author: Charles-Édouard Giguère
+###
+### Methode pour afficher des frequences de facteur et les conserver
+### dans des listes mais les afficher dans un format interessant.
 
 freq <- function(x, y = NULL, ..., labels = NULL, data = NULL){
     result <- list()
@@ -29,9 +31,10 @@ freq <- function(x, y = NULL, ..., labels = NULL, data = NULL){
                 factlocal <- factor(factlocal)
             }
 
-            result[[i]] <- cbind(n = table(factlocal, useNA = "always"),
-                                 "%" =c(prop.table(table(factlocal, useNA = "no")), NA),
-                                 "% with NA" = prop.table(table(factlocal, useNA = "always")))
+            result[[i]] <- cbind(
+                n = table(factlocal, useNA = "always"),
+                "%" =c(prop.table(table(factlocal, useNA = "no")), NA),
+                "% with NA" = prop.table(table(factlocal, useNA = "always")))
         }
     }
     if(is.vector(x) | is.factor(x))
@@ -42,9 +45,10 @@ freq <- function(x, y = NULL, ..., labels = NULL, data = NULL){
             factlocal <- factor(factlocal)
         }
 
-        result[[1]] <- cbind("n" = table(factlocal,useNA="always"),
-                             "%"=c(prop.table(table(factlocal,useNA="no")),NA),
-                             "% with NA"=prop.table(table(factlocal,useNA="always")))
+        result[[1]] <- cbind(
+            "n" = table(factlocal,useNA="always"),
+            "%"=c(prop.table(table(factlocal,useNA="no")),NA),
+            "% with NA"=prop.table(table(factlocal,useNA="always")))
         if(!is.null(labels))
             names(result) <- labels
         else
@@ -73,7 +77,7 @@ freq.formula <- function(x, ..., data = NULL){
 print.frequencies <- function(x, ..., toLatex = FALSE){
     test <- labels(x)
     if(!toLatex){ ### default
-    
+
 
         for(i in 1:length(x)){
             xlocal <- x[[i]]
@@ -94,7 +98,7 @@ print.frequencies <- function(x, ..., toLatex = FALSE){
                 for(j in c("%","&","$","_"))
                     row.names(xlocal) <- gsub(j, paste("\\", j, sep = ""),
                                               row.names(xlocal),
-                                              fixed = TRUE)    
+                                              fixed = TRUE)
             }
             xlocal[,2:3] = round(xlocal[,2:3]*100,
                                  digits=1)
@@ -104,7 +108,8 @@ print.frequencies <- function(x, ..., toLatex = FALSE){
             cat("\\hline\n")
             row.names(xlocal)[dim(xlocal)[1]]="NA"
             cat()
-            write.table(as.data.frame(xlocal),na="-",sep=" & ",quote=F,eol="\\\\\n",col.names=FALSE)
+            write.table(as.data.frame(xlocal),na="-",sep=" & ",
+                        quote=F,eol="\\\\\n",col.names=FALSE)
             cat("\\hline\n\\hline\n")
             cat("Total      & ", sum(xlocal[,1]),"& 100 & 100 \\\\\n")
             cat("\\multicolumn{4}{c}{}\\\\\n")

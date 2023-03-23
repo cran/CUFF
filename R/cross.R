@@ -1,7 +1,7 @@
 ###     -*- Coding: utf-8 -*-          ###
 ### Analyste Charles-Édouard Giguère   ###
-
 ### Creation of an object to manage a two-dimensional table.
+
 cross <- function(x, ...){
     ## if x is not a table we first create the table
     ## with t and ... options .
@@ -37,7 +37,7 @@ print.cross <- function(x, ..., test = "chisq.test", export = NULL){
 
   p <- paste(x$NAMES[1], x$NAMES[2], sep = "*")
   if(!("tex" %in% export)){
-    
+
     cat("Contingency table for ", p, "\n\n", sep = "")
     print.table(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
                 zero.print = ".")
@@ -57,7 +57,7 @@ print.cross <- function(x, ..., test = "chisq.test", export = NULL){
   if("tex" %in% export){
     writeLines(c("\\begin{table}[htp!]",
                  "\\centering"))
-    
+
     xt1 <- xtable(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
                   align = paste("l|",paste(rep("r",dim(x$T)[2]),collapse=""),
                                 "|r",sep=""),
@@ -138,7 +138,7 @@ print.cross <- function(x, ..., test = "chisq.test", export = NULL){
                         "\\begin{table}[htp!]",
                         "\\centering",
                         "\\pagenumbering{gobble}"))
-    
+
     xt1 <- xtable(round(addmargins(x$T, FUN = Total, quiet = TRUE), 1),
                   align = paste("l|",paste(rep("r",dim(x$T)[2]),collapse=""),
                                 "|r",sep=""),
@@ -221,46 +221,32 @@ print.cross <- function(x, ..., test = "chisq.test", export = NULL){
   }
   if("xlsx" %in% export){
     wd <- setwd(Sys.getenv("temp"))
-    
-    wb <- createWorkbook()
-    FS <- createSheet(wb, "Frequencies")
-    RS <- createSheet(wb, "Row percentages")
-    CS <- createSheet(wb, "Column percentages")
 
-    R.FS <- createRow(FS, rowIndex = 2)
-    C.FS <- createCell(R.FS, colIndex = 2)
-    setCellValue(C.FS[[1,1]],
-                 paste("Contingency table for",p, sep = " "))
-    addDataFrame(as.data.frame.matrix(addmargins(x$T, FUN = Total,
-                                                 quiet = TRUE)),
-                 FS, startRow = 3, startColumn = 2)
+        wb <- createWorkbook("cross_output.xlsx")
+        addWorksheet(wb, "Frequencies")
+        addWorksheet(wb, "Row percentages")
+        addWorksheet(wb, "Column percentages")
+        writeData(wb, 1, paste("Contingency table for",p,
+                               sep = " "),2,2)
+        writeData(wb, 1, addmargins(x$T, FUN = Total, quiet = TRUE), 2,3)
+        writeData(wb, 2, paste("Row percentages for",p,
+                               sep = " "),2,2)
+        writeData(wb, 2, round(x$PCT.ROW.T * 100,2),2,3)
+        writeData(wb, 3, paste("Col percentages for",p,
+                               sep = " "),2,2)
+        writeData(wb, 3, round(x$PCT.COL.T * 100,2),2,3)
+        addWorksheet(wb, "Statistics")
+        stat.output <- character()
+        for(i in test){
+            FUN <- match.fun(i)
+            stat.output <- c(stat.output,
+                             capture.output(FUN(x$T)))
 
-    R.RS <- createRow(RS, rowIndex = 2)
-    C.RS <- createCell(R.RS, colIndex = 2)
-    setCellValue(C.RS[[1,1]],
-                 paste("Row percentages for",p, sep = " "))        
-    addDataFrame(as.data.frame.matrix(round(x$PCT.ROW.T * 100,2)),
-                 sheet = RS, startRow = 3, startColumn = 2)
-    
-    R.CS <- createRow(CS, rowIndex = 2)
-    C.CS <- createCell(R.CS, colIndex = 2)
-    setCellValue(C.CS[[1,1]],
-                 paste("Col percentages for",p, sep = " "))        
-    addDataFrame(as.data.frame.matrix(round(x$PCT.COL.T * 100,2)),
-                 sheet = CS, startRow = 3, startColumn = 2)
-    
-    AS  <- createSheet(wb, "Statistics")
-    stat.output <- character()
-    for(i in test){
-      FUN <- match.fun(i)
-      stat.output <- c(stat.output,
-                       capture.output(FUN(x$T)))
-    }
-    addDataFrame(stat.output, AS, startRow = 4, startColumn = 2,
-                 col.names = FALSE, row.names = FALSE)
-    saveWorkbook(wb, file = "cross_output.xlsx")
-    shell("start cross_output.xlsx")
-    setwd(wd)
+        }
+        writeData(wb, 4, stat.output,2,3)
+        saveWorkbook(wb, file = "cross_output.xlsx", overwrite = TRUE)
+        shell("start cross_output.xlsx")
+        setwd(wd)
   }
 
 }
@@ -319,7 +305,7 @@ Total = function(x){
 
 
 ### require(xtable, quietly = TRUE, warn.conflicts = FALSE)
-### 
+###
 ### df <- expand.grid(test = 1:2, toast = 1:2)
 ### xt1 <- xtabs( ~ test + toast, df)
 ### print(cross(xt1), export = "tex")
